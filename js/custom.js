@@ -1,3 +1,4 @@
+import { reciters } from '../js/reciters.js';
 // to get current year
 function getYear() {
     var currentDate = new Date();
@@ -7,33 +8,143 @@ function getYear() {
 
 getYear();
 
-// isotope js
-$(window).on('load', function () {
-    $('.filters_menu li').click(function () {
-        $('.filters_menu li').removeClass('active');
-        $(this).addClass('active');
+// Get the audio element
+var audio = document.getElementById("myAudio");
 
-        var data = $(this).attr('data-filter');
-        $grid.isotope({
-            filter: data
-        })
-    });
+// Store the current playback time before navigating
+var currentTime = audio.currentTime;
 
-    var $grid = $(".grid").isotope({
-        itemSelector: ".all",
-        percentPosition: false,
-        masonry: {
-            columnWidth: ".all"
-        }
-    })
+// Function to store the current playback time before navigating
+function storePlaybackTime() {
+    currentTime = audio.currentTime;
+}
+
+// Event listener to store the playback time before leaving the page
+window.addEventListener("beforeunload", storePlaybackTime);
+
+// When navigating to a new page
+document.querySelector('a').addEventListener('click', function(event) {
+    // Prevent the default behavior of the link
+    event.preventDefault();
+
+    // Navigate to the new page
+    window.location.href = this.href;
+
+    // Restore the playback time after a short delay to allow the new page to load
+    setTimeout(function() {
+        audio.currentTime = currentTime;
+    }, 500); // Adjust the delay as needed
 });
 
 // nice select
-$(document).ready(function() {
-    $('select').niceSelect();
-    getRecitations();
-    getPrayerTime();
-  });
+$(document).ready(function ()
+{
+  $('select').niceSelect();
+  
+  var columns = [
+    // Your existing column configuration here
+    {
+        dataField: "Pic",
+        caption: "",
+        width:300,
+        allowFiltering: false,
+        allowSorting: false,
+        cellTemplate: function(container, options) {
+            $("<img>", {
+                "src": options.data.Pic,
+                "css": {
+                    "max-width": "80%",
+                    "max-height": "80%",
+                    "display": "block",
+                    "margin": "auto",
+                    "border-radius": "50%", // Apply border-radius for rounded shape
+                    "width": "100%"
+                }
+            }).appendTo(container);
+        }
+    },
+    {
+        dataField: "name",
+        caption: "الاسم",
+    },
+    {
+        dataField: "moshaf.name",
+        caption: "المصحف",
+    },
+    {
+      type: "buttons",
+      width: 80,
+      showInColumnChooser: false,
+      buttons: [{
+          icon: "video",
+          visible: true,
+          hint: 'تشغيل',
+          onClick: function (e) {
+              var ID = e.row.data.Id;
+              window.location.href = 'Home/Edit/' + ID;
+          }
+      }
+      ]
+  },
+  ];
+
+
+  var dataGrid = $("#gridContainer").dxDataGrid({
+    dataSource: reciters,
+    columns: columns,
+    columnAutoWidth: true,
+    showBorders: true,
+    rtlEnabled: true,
+    showRowLines: true,
+    paging: {
+        pageSize: 10
+    },
+    pager: {
+        showPageSizeSelector: true,
+      allowedPageSizes: [10, 20],
+      showNavigationButtons: true,
+    },
+    filterRow: {
+      visible: true,
+      applyFilter: 'auto',
+    },
+    searchPanel: {
+      visible: true,
+      highlightCaseSensitive: true,
+      placeholder: 'البحث ...',
+    },
+}).dxDataGrid("instance");
+
+  function adjustGridForMobile() {
+    if ($(window).width() <= 768) 
+    { // Adjust as needed
+        dataGrid.columnOption("Pic", "width", 50);
+        dataGrid.option({
+            columnAutoWidth: false,
+            wordWrapEnabled: true
+            // Add other options for mobile view as needed
+        });
+    } else {
+        dataGrid.columnOption("Pic", "width", 100);
+        dataGrid.option({
+            columnAutoWidth: true,
+            wordWrapEnabled: false
+            // Restore other options for desktop view as needed
+        });
+    }
+}
+
+// Call adjustGridForMobile initially
+adjustGridForMobile();
+
+// Bind adjustGridForMobile to window resize event
+$(window).resize(function() {
+    adjustGridForMobile();
+});
+  
+  // getRecitations();
+  getPrayerTime();
+});
 
   function formatDate(date) {
     // Get day, month, and year
@@ -59,8 +170,8 @@ navigator.geolocation.getCurrentPosition((position) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
     
-    const apiUrl = `https://api.aladhan.com/v1/timings/${formattedDate}?latitude=${latitude}&longitude=${longitude}&method=1`;
-
+  const apiUrl = `https://api.aladhan.com/v1/timings/${formattedDate}?latitude=${latitude}&longitude=${longitude}&method=1`;
+  const apiUrlLocation = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ar`
     fetch(apiUrl)
   .then(response => {
     // Check if the request was successful (status code 200)
@@ -74,28 +185,20 @@ navigator.geolocation.getCurrentPosition((position) => {
   .then(data => {
       // Check if the 'recitations' array is present in the response
       
-    console.log(data.data.timings.Fajr)
+      $("#FajrTime").text(convertTimeFormat(data.data.timings.Fajr));
+      $("#SunriseTime").text(convertTimeFormat(data.data.timings.Sunrise));
+      $("#DhuhrTime").text(convertTimeFormat(data.data.timings.Dhuhr));
+      $("#AsrTime").text(convertTimeFormat(data.data.timings.Asr));
+      $("#MaghribTime").text(convertTimeFormat(data.data.timings.Maghrib));
+      $("#IshaTime").text(convertTimeFormat(data.data.timings.Isha));
   })
   .catch(error => {
     // Handle any errors that occurred during the fetch
     console.error('Error fetching data:', error);
   });
     
-    
-}, (error) => {
-  console.error('Error getting current location:', error);
-});
-}
-
-function getRecitations()
-{
-    const recitationsDiv = document.getElementById('recitationsDiv');
-
-    const apiUrl = "https://api.quran.com/api/v4/resources/recitations?language=ar";
-
-// Make a GET request to the API
-fetch(apiUrl)
-  .then(response => {
+  fetch(apiUrlLocation).then(response =>
+  {
     // Check if the request was successful (status code 200)
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -103,53 +206,59 @@ fetch(apiUrl)
 
     // Parse the JSON response
     return response.json();
-  })
-  .then(data => {
-    // Check if the 'recitations' array is present in the response
-    if (data && data.recitations && Array.isArray(data.recitations)) {
-      // Loop over each recitation
-      data.recitations.forEach(recitation => {
-          
-        // Access the properties of each recitation
-        const divElement = document.createElement('div');
-        divElement.className = 'col-xl-3 col-lg-4 col-sm-4 col-6 text-center boxSection';
+  }).then(data =>
+  {
+    const divElement = document.getElementById('cityDiv');
+    $("#cityDiv").text(`${data.display_name}`);
 
-        const rowElement = document.createElement('div');
-        rowElement.className = 'row';
-
-        const colElement = document.createElement('div');
-        colElement.className = 'col-12';
-
-        const pElement = document.createElement('a');
-          pElement.setAttribute("href", "menu.html");
-          if (recitation.id == 1) {
-            pElement.textContent  = recitation.translated_name.name +' مجود';  
-          } else if (recitation.id == 2) {
-            pElement.textContent  = recitation.translated_name.name +' مرتل';  
-          } else {
-            pElement.textContent  = recitation.translated_name.name;  
-          }
-        
-
-        // Append elements to construct the structure
-        colElement.appendChild(pElement);
-        rowElement.appendChild(colElement);
-        divElement.appendChild(rowElement);
-
-        // Append the div structure to the recitationsDiv
-        recitationsDiv.appendChild(divElement);
-        // ... (access other properties as needed)
-      });
-    } else {
-      console.error('Invalid or missing recitations array in the response');
-    }
-  })
-  .catch(error => {
+  }).catch(error =>
+  {
     // Handle any errors that occurred during the fetch
     console.error('Error fetching data:', error);
   });
 
+}, (error) => {
+  console.error('Error getting current location:', error);
+});
 }
+
+// function getRecitations()
+// {
+//     const recitationsDiv = document.getElementById('recitationsDiv');
+
+//     const apiUrl = "https://www.mp3quran.net/api/v3/reciters?language=ar";
+
+// // Make a GET request to the API
+// fetch(apiUrl)
+//   .then(response => {
+//     // Check if the request was successful (status code 200)
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+//     // Parse the JSON response
+//     return response.json();
+//   })
+//   .then(data => {
+//     // Check if the 'recitations' array is present in the response
+//     if (data && data.reciters && Array.isArray(data.reciters)) {
+//       // Loop over each recitation
+//       data.reciters.forEach(reciters => {
+          
+//         $(() => {
+          
+//         });
+//         // ... (access other properties as needed)
+//       });
+//     } else {
+//       console.error('Invalid or missing recitations array in the response');
+//     }
+//   })
+//   .catch(error => {
+//     // Handle any errors that occurred during the fetch
+//     console.error('Error fetching data:', error);
+//   });
+
+// }
 
 
 function convertTimeFormat(inputTime) {
@@ -168,28 +277,3 @@ function convertTimeFormat(inputTime) {
     return formattedTime;
 }
 
-// client section owl carousel
-$(".client_owl-carousel").owlCarousel({
-    loop: true,
-    margin: 0,
-    dots: false,
-    nav: true,
-    navText: [],
-    autoplay: true,
-    autoplayHoverPause: true,
-    navText: [
-        '<i class="fa fa-angle-left" aria-hidden="true"></i>',
-        '<i class="fa fa-angle-right" aria-hidden="true"></i>'
-    ],
-    responsive: {
-        0: {
-            items: 1
-        },
-        768: {
-            items: 2
-        },
-        1000: {
-            items: 2
-        }
-    }
-});

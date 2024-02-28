@@ -2,9 +2,53 @@
 body {
   font-family: 'Gulzar', serif;
   color: #fff;
-  background-color: #000000;
+  background-color: #1F2125;
   overflow-x: hidden;
 }
+
+@font-face {
+  font-family: 'PDMS_Saleem_QuranFont';
+  src: url('../fonts/Nabi.ttf') format('truetype');
+}
+
+.quranic-text {
+  font-family: 'PDMS_Saleem_QuranFont', sans-serif;
+  font-size: 18px; /* adjust the size as needed */
+  line-height: 1.5; /* adjust line height as needed */
+  text-align: center; /* for right-to-left text */
+}
+
+.plyr {
+  border-radius: 30px; /* You can adjust the radius to your preference */
+  overflow: hidden; /* Ensures border-radius works properly */
+}
+
+#centered-icon {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  transform: translate(-50%, -50%);
+}
+
+/* CSS for the full-page overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  z-index: 9999; /* ensure it's above other content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* @font-face {
+  font-family: 'MyWebFont2';
+  src: url('../fonts/QuranSurah01-w1yO6.ttf') format('truetype'); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 }*/
 
 .layout_padding {
   padding: 90px 0;
@@ -28,7 +72,6 @@ body {
 
 .layout_padding-bottom {
   padding-bottom: 90px;
-  margin-top: 200px;
 }
 
 h1,
@@ -141,7 +184,15 @@ a:focus {
 }
 
 .header_section {
-  padding: 15px 0;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  background-color:#1F2125; /* Set the background color */
+  position: fixed;
+  border-bottom: 1px solid #464B50;
+  top: 0;
+  width: 100%;
+  z-index: 1000; 
 }
 
 .header_section .container-fluid {
@@ -331,8 +382,8 @@ a:focus {
 
 .slider_section .row {
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .slider_section #customCarousel1 {
@@ -361,8 +412,23 @@ a:focus {
   font-size: 25px;
 }
 .AzanCard{
-  background-color: #000000;
+  background-color: #1F2125;
 }
+
+.CardH .card {
+  border-color: #464B50;
+}
+
+.CardH:hover .card {
+  border-color: #56C0D0;
+}
+
+  .CardH:hover h5, .CardH:hover p  {
+    color: #56C0D0;
+
+  }
+  
+  
 .slider_section .detail-box h1 {
   font-size: 3.5rem;
   font-weight: bold;
@@ -789,14 +855,8 @@ a:focus {
 }
 
 .client_section .box {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  margin: 15px;
+  background-color: #ffffff;
 }
 
 .client_section .box .img-box {
@@ -817,7 +877,6 @@ a:focus {
 
 .client_section .box .img-box img {
   border-radius: 100%;
-  border: 5px solid #0271F7;
   position: relative;
 }
 
@@ -830,14 +889,12 @@ a:focus {
   height: 20px;
   background-color: #0271F7;
   -webkit-transform: rotate(45deg) translateX(-50%);
-          transform: rotate(45deg) translateX(-50%);
+  transform: rotate(45deg) translateX(-50%);
 }
 
 .client_section .box .detail-box {
   background-color: #222831;
   color: #ffffff;
-  padding: 25px 25px 15px 25px;
-  border-radius: 5px;
 }
 
 .client_section .box .detail-box h6 {
@@ -858,22 +915,37 @@ a:focus {
   display: flex;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
-          justify-content: center;
+      justify-content: center;
   margin-top: 45px;
   padding: 0 15px;
 }
 
-.client_section .owl-carousel .owl-nav .owl-prev,
-.client_section .owl-carousel .owl-nav .owl-next {
-  width: 45px;
-  height: 45px;
+/* Styling for the previous button */
+.client_section .owl-carousel .owl-nav .owl-prev {
+  width: 30px;
+  height: 30px;
   background-color: #0271F7;
   color: #ffffff;
   outline: none;
-  bottom: 0px;
   font-size: 24px;
-  margin: 0 5px;
   border-radius: 100%;
+  position: absolute;
+  top: 50%;
+  right: 0; /* Adjust this value to position it horizontally */
+}
+
+/* Styling for the next button */
+.client_section .owl-carousel .owl-nav .owl-next {
+  width: 30px;
+  height: 30px;
+  background-color: #0271F7;
+  color: #ffffff;
+  outline: none;
+  font-size: 24px;
+  border-radius: 100%;
+  position: absolute;
+  top: 50%;
+  left: 0; /* Adjust this value to position it horizontally */
 }
 
 /* client section end */

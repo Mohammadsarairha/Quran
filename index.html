@@ -30,14 +30,17 @@
     <!-- responsive style -->
     <link href="css/responsive.css" rel="stylesheet" />
 
+    <!-- DevExtreme theme -->
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/23.2.4/css/dx.light.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/23.2.4/css/dx.dark.css" />
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
   </head>
 
   <body>
 
     <div class="hero_area">
-      <div class="bg-box">
-        <img src="images/New Project.jpg" alt="">
-      </div>
+
       <!-- header section strats -->
       <header class="header_section">
         <div class="container">
@@ -50,19 +53,25 @@
               <span class=""> </span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse" dir="rtl" id="navbarSupportedContent">
               <ul class="navbar-nav  mx-auto ">
                 <li class="nav-item active">
-                  <a class="nav-link" href="#QuranSection">القران الكريم<span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="#QuranHome">القران الكريم<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="menu.html">الإذكار</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="about.html">الإحاديث</a>
+                  <a class="nav-link" href="#AzanSec">اوقات الصلاه</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#SecondeSec">قائمة القراء</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#QuranSection">المصحف</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="quran.html">الإذكار</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="about.html">الإحاديث</a>
                 </li>
               </ul>
             </div>
@@ -71,7 +80,7 @@
       </header>
       <!-- end header section -->
       <!-- slider section -->
-      <section class="slider_section ">
+      <section class="slider_section " id="QuranHome" style="background-color: #1F2125; top: 70px;">
         <div id="customCarousel1" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner">
             <div class="carousel-item active">
@@ -104,40 +113,99 @@
       </section>
       <!-- end slider section -->
     </div>
-    <section>
+    <section style="margin-bottom: 150px;" id="AzanSec">
+      <audio id="myAudio" controls autoplay>
+        <source src="https://backup.qurango.net/radio/salma" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+
+    </section>
+    <a href="quran.html" style="color: rebeccapurple;">Go to Page 2</a>
+    <section style="margin-top: 50px; border-color: red;">
       <div class="container text-center" dir="rtl" id="AzanContainer">
         <div class="row">
-          <div class="col-6 text-center">
+          <div class="col-12 text-center">
+            <h1 style="font-size: 80px ;">اوقات الصلاه</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 text-center">
+            <p id="cityDiv" style="font-family: 'DroidArabicKufiRegular'"></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 text-center CardH">
             <div class="card">
               <div class="card-body AzanCard">
-                <h5 class="card-title">صلاه الظهر</h5>
-                <p class="card-text">6:50</p>
+                <h5 class="card-title">الفجر</h5>
+                <p class="card-text" id="FajrTime"></p>
               </div>
             </div>
           </div>
-          <div class="col-6 text-center">
+          <div class="col-6 text-center CardH">
             <div class="card">
               <div class="card-body AzanCard">
-                <h5 class="card-title">صلاه الظهر</h5>
-                <p class="card-text">6:50</p>
+                <h5 class="card-title">الشروق</h5>
+                <p class="card-text" id="SunriseTime"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-6 text-center CardH">
+            <div class="card">
+              <div class="card-body AzanCard">
+                <h5 class="card-title">الظهر</h5>
+                <p class="card-text" id="DhuhrTime"></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 text-center CardH">
+            <div class="card">
+              <div class="card-body AzanCard">
+                <h5 class="card-title">العصر</h5>
+                <p class="card-text" id="AsrTime"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-6 text-center CardH">
+            <div class="card">
+              <div class="card-body AzanCard">
+                <h5 class="card-title">المغرب</h5>
+                <p class="card-text" id="MaghribTime"></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 text-center CardH">
+            <div class="card">
+              <div class="card-body AzanCard">
+                <h5 class="card-title">العشاء</h5>
+                <p class="card-text" id="IshaTime"></p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-    
     <!-- offer section -->
-    <section class="offer_section layout_padding-bottom" id="SecondeSec">
-      <div class="container">
+    <section class="offer_section layout_padding-bottom" id="SecondeSec" style="margin-bottom: 150px;">
+      <div class="container" style="margin-top: 60px;">
         <div class="container text-right" dir="rtl">
           <div class="row">
             <div class="col-12 text-center">
-              <h1 style="font-size: 80px ; border-bottom: 1px solid #fff;">قائمة القراء</h1>
+              <h1 style="font-size: 80px ;">قائمة القراء</h1>
             </div>
           </div>
           <div class="row text-center" id="recitationsDiv">
-
+            <div class="col-12">
+              <div class="demo-container dx-theme-material-blue-dark">
+                <div id="gridContainer"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -147,17 +215,11 @@
 
     <!-- food section -->
 
-    <section class="food_section layout_padding-bottom" id="QuranSection">
+    <section style="margin-bottom: 250px;" id="QuranSection">
+    </section>
+    <section class="food_section layout_padding-bottom">
       <div class="container">
-        <div class="heading_container heading_center">
-          <div class="row">
-            <div class="col-12">
-              <img loading="lazy" alt="إقرأ بسم ربك الذي خلق "
-                style="max-width:85%;border-radius:0;display: block;margin-left: auto;margin-right: auto; margin-bottom: 50px;margin-top: 50px;"
-                src="images/iqraa.png">
-            </div>
-          </div>
-        </div>
+
         <div class="filters-content text-right" dir="rtl">
           <div class="row grid">
             <div class="col-sm-6 col-lg-4 all ">
@@ -315,6 +377,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </section>
 
@@ -327,55 +390,21 @@
 
     <section class="client_section layout_padding-bottom">
       <div class="container">
-        <div class="heading_container heading_center psudo_white_primary mb_45">
-          <h2>
-            What Says Our Customers
-          </h2>
-        </div>
-        <div class="carousel-wrap row ">
-          <div class="owl-carousel client_owl-carousel">
-            <div class="item">
-              <div class="box">
-                <div class="detail-box">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam
-                  </p>
-                  <h6>
-                    Moana Michell
-                  </h6>
-                  <p>
-                    magna aliqua
-                  </p>
-                </div>
-                <div class="img-box">
-                  <img src="images/client1.jpg" alt="" class="box-img">
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="box">
-                <div class="detail-box">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam
-                  </p>
-                  <h6>
-                    Mike Hamell
-                  </h6>
-                  <p>
-                    magna aliqua
-                  </p>
-                </div>
-                <div class="img-box">
-                  <img src="images/client2.jpg" alt="" class="box-img">
-                </div>
+        <div class="row text-center">
+          <div class="col-12" style="max-width: 70%;max-height: 50%; margin: auto;">
+            <div class="carousel-wrap row ">
+              <div class="owl-carousel client_owl-carousel" id="owlDiv" style="padding-left: 35px;padding-right: 35px;">
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- <div>
+      <p class="quranic-text">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+      <p>الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ</p>
+    </div> -->
 
     <!-- end client section -->
 
@@ -478,9 +507,11 @@
     <!-- nice select -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
     <!-- custom js -->
-    <script src="js/custom.js"></script>
+    <script type="module" src="js/custom.js"></script>
     <!-- End Google Map -->
-
+    <!-- DevExtreme libraries (reference only one of them) -->
+    <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/23.2.4/js/dx.all.js"></script>
+    <script src="https://cdn.plyr.io/3.6.8/plyr.polyfilled.js"></script>
   </body>
 
 </html>
