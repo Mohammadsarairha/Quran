@@ -79,9 +79,10 @@ surah.forEach(surah => {
         player.play();
         
         setTimeout(() => {
-            const azanSection = document.getElementById("ssd");
+            const azanSection = document.getElementById("owlDiv");
             if (azanSection) {
-                azanSection.scrollIntoView({ behavior: 'smooth' });
+                azanSection.style.scrollMarginTop = "100px";
+                azanSection.scrollIntoView({ behavior: 'smooth'});
             }
         }, 1500);
         var owl = $(".client_owl-carousel");

@@ -166,60 +166,60 @@ function getPrayerTime()
     // Format the date
     const formattedDate = formatDate(currentDate);
 // Get current location using the browser's Geolocation API
-navigator.geolocation.getCurrentPosition((position) => {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    
-  const apiUrl = `https://api.aladhan.com/v1/timings/${formattedDate}?latitude=${latitude}&longitude=${longitude}&method=1`;
-  const apiUrlLocation = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ar`
-    fetch(apiUrl)
+fetch('https://ipinfo.io/json')
   .then(response => {
-    // Check if the request was successful (status code 200)
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-
-    // Parse the JSON response
     return response.json();
   })
   .then(data => {
-      // Check if the 'recitations' array is present in the response
-      
-      $("#FajrTime").text(convertTimeFormat(data.data.timings.Fajr));
-      $("#SunriseTime").text(convertTimeFormat(data.data.timings.Sunrise));
-      $("#DhuhrTime").text(convertTimeFormat(data.data.timings.Dhuhr));
-      $("#AsrTime").text(convertTimeFormat(data.data.timings.Asr));
-      $("#MaghribTime").text(convertTimeFormat(data.data.timings.Maghrib));
-      $("#IshaTime").text(convertTimeFormat(data.data.timings.Isha));
+    const [latitude, longitude] = data.loc.split(',').map(parseFloat);
+    
+    const apiUrl = `https://api.aladhan.com/v1/timings/${formattedDate}?latitude=${latitude}&longitude=${longitude}&method=1`;
+    const apiUrlLocation = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ar`;
+    
+    // Fetch prayer times data using latitude and longitude
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Update HTML elements with prayer times
+        $("#FajrTime").text(convertTimeFormat(data.data.timings.Fajr));
+        $("#SunriseTime").text(convertTimeFormat(data.data.timings.Sunrise));
+        $("#DhuhrTime").text(convertTimeFormat(data.data.timings.Dhuhr));
+        $("#AsrTime").text(convertTimeFormat(data.data.timings.Asr));
+        $("#MaghribTime").text(convertTimeFormat(data.data.timings.Maghrib));
+        $("#IshaTime").text(convertTimeFormat(data.data.timings.Isha));
+      })
+      .catch(error => {
+        console.error('Error fetching prayer times data:', error);
+      });
+
+    // Fetch location information using latitude and longitude
+    fetch(apiUrlLocation)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Update cityDiv element with city name
+        $("#cityDiv").text(`${data.address.country} / ${data.address.state}`);
+      })
+      .catch(error => {
+        console.error('Error fetching location information:', error);
+      });
   })
   .catch(error => {
-    // Handle any errors that occurred during the fetch
-    console.error('Error fetching data:', error);
-  });
-    
-  fetch(apiUrlLocation).then(response =>
-  {
-    // Check if the request was successful (status code 200)
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    // Parse the JSON response
-    return response.json();
-  }).then(data =>
-  {
-    const divElement = document.getElementById('cityDiv');
-    $("#cityDiv").text(`${data.display_name}`);
-
-  }).catch(error =>
-  {
-    // Handle any errors that occurred during the fetch
-    console.error('Error fetching data:', error);
+    console.error('Error fetching IP information:', error);
   });
 
-}, (error) => {
-  console.error('Error getting current location:', error);
-});
 }
 
 // function getRecitations()

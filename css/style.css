@@ -934,6 +934,23 @@ a:focus {
   right: 0; /* Adjust this value to position it horizontally */
 }
 
+.QuranPage{
+  max-width: 70%;
+  max-height: 50%; 
+  margin: auto;
+}
+
+@media (max-width: 430px) {
+  .client_section .owl-carousel .owl-nav .owl-prev {
+    display: none;
+  }
+  .client_section .owl-carousel .owl-nav .owl-next {
+    display: none;
+  }
+  .QuranPage{
+    max-width: 100%;
+  }
+}
 /* Styling for the next button */
 .client_section .owl-carousel .owl-nav .owl-next {
   width: 30px;
