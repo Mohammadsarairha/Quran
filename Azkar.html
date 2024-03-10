@@ -55,13 +55,15 @@
       #toolbar {
         box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.08);
         padding: 5px 10px;
-        z-index: 10000;
         background-color: #1F2125;
+        z-index: 10000;
+        position: fixed;
       }
       
       .panel-list {
         height: 400px;
         padding-top: 12px;
+        margin-top: 70px;
       }
       
       .options {
@@ -96,11 +98,41 @@
       #content h2 {
         font-size: 26px;
       }
+
+      .crate-div 
+      {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #4D4D4D;
+        background-color: #1F2125;
+        padding: 10px;
+        margin: 10px;
+        box-shadow: 3px 3px 5px #4D4D4D;
+        margin-top: 120px;
+      }
+
+      .form {
+        padding: 20% 0;
+        text-align: center;
+      }
+      
+      #progress-button {
+        margin-bottom: 20px;
+      }
+      
+      #progressBarStatus {
+        display: inline-block;
+        padding-top: 8px;
+      }
+      
+      .complete .dx-progressbar-range {
+        background-color: red;
+      }
     </style>
   </head>
 
   <body>
-    <div style="margin-top: 120px;">
+    <div style="margin-top: 80px;">
       <header class="header_section">
         <div class="container">
           <nav class="navbar navbar-expand-lg custom_nav-container ">
@@ -143,7 +175,14 @@
         <div class="flex-container">
           <div id="toolbar"></div>
           <div id="drawer">
-            <div id="content"></div>
+            <div class="crate-div">
+              <div class="demo-container">
+                <div class="form">
+                  <div id="progress-button"></div>
+                  <div id="progressBarStatus"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -18,7 +18,16 @@ $(document).ready(function ()
 
     URL = sessionStorage.getItem('Url');
     ID = parseInt(sessionStorage.getItem('Id'));
-    
+    if(URL === null)
+    {
+        URL = "https:\/\/server6.mp3quran.net\/akdr\/";
+        sessionStorage.setItem('Url', "https:\/\/server6.mp3quran.net\/akdr\/");
+    }
+    if(isNaN(ID))
+    {
+        ID = 1;
+        sessionStorage.setItem('Id', 1);
+    }
     galleryWidget = $('#gallery').dxGallery({
         dataSource: dataSource,
         height: 'auto', // Adjust as needed
