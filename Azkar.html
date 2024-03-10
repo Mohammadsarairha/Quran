@@ -36,20 +36,65 @@
     <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/23.2.4/css/dx.dark.css" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
     <style>
-      .dx-gallery .dx-gallery-nav-button-next, .dx-gallery .dx-gallery-nav-button-prev {
-        width: 50%;
-        background-color:transparent;
-        top: 40%;
-        bottom: 40%;
-        height: 10%;
-        border-radius: 50%;
-        color:#fff
+      .demo-container {
+        overflow: visible;
       }
-      .dx-gallery .dx-gallery-nav-button-next::before{
-        color: #fff;
+      
+      .flex-container {
+        display: flex;
+        flex-direction: column;
       }
-      .dx-gallery .dx-gallery-nav-button-prev::before{
-        color: #fff;
+
+      .dx-drawer-content {
+        display: flex;
+      }
+      .dx-scrollable-native.dx-rtl.dx-scrollable .dx-scrollable-content{
+        background-color: #1F2125;
+        border: 0.5px solid #4D4D4D;
+      }
+      #toolbar {
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.08);
+        padding: 5px 10px;
+        z-index: 10000;
+        background-color: #1F2125;
+      }
+      
+      .panel-list {
+        height: 400px;
+        padding-top: 12px;
+      }
+      
+      .options {
+        padding: 20px;
+        background-color: rgba(191, 191, 191, 0.15);
+      }
+      
+      .options-container {
+        display: flex;
+        align-items: center;
+      }
+      
+      .caption {
+        font-size: 18px;
+        font-weight: 500;
+      }
+      
+      .option {
+        margin-top: 10px;
+        display: inline-block;
+        margin-right: 50px;
+      }
+      
+      label {
+        font-weight: bold;
+      }
+      
+      #content {
+        padding: 0 24px;
+      }
+      
+      #content h2 {
+        font-size: 26px;
       }
     </style>
   </head>
@@ -66,7 +111,6 @@
               aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class=""> </span>
             </button>
-
             <div class="collapse navbar-collapse" dir="rtl" id="navbarSupportedContent">
               <ul class="navbar-nav  mx-auto ">
                 <li class="nav-item active">
@@ -94,64 +138,16 @@
       </header>
       <!-- end header section -->
     </div>
-    <section class="food_section layout_padding-bottom" id="QuranSection">
-      <div class="container">
-        <div class="heading_container heading_center">
-          <div class="row">
-            <div class="col-12">
-              <img loading="lazy" alt="إقرأ بسم ربك الذي خلق "
-                style="max-width:85%;border-radius:0;display: block;margin-left: auto;margin-right: auto; margin-bottom: 50px;margin-top: 50px;"
-                src="images/iqraa.png">
-            </div>
+    <section style="margin-bottom: 10px;">
+      <div class="demo-container">
+        <div class="flex-container">
+          <div id="toolbar"></div>
+          <div id="drawer">
+            <div id="content"></div>
           </div>
         </div>
       </div>
     </section>
-    <div class="container">
-      <div class="row">
-      <div class="col-12">
-        <p class="card-text" style="text-align: right; font-size: 20px;line-height: 2.5;">قائمة القراء</p>
-      </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <div id="RecitersList" style="text-align: right;"></div>
-        </div>
-      </div>
-    </div>
-    <section style="margin-top: 50px; margin-bottom: 50px;">
-      <div class="container text-center" dir="rtl">
-        <div class="row" id="SurahDiv">
-        </div>
-      </div>
-      <div class="row justify-content-center text-center">
-        <div class="col-4 CardH" style="margin-top: 50px;">
-            <div class="card" id="QuranDuaa">
-                <div class="card-body AzanCard">
-                    <h5 class="quranic-text">دعاء ختم القران</h5>
-                </div>
-            </div>
-        </div>
-    </div>
-    </section>
-    <!-- client section -->
-    <div id="popup" class="tt">
-            <div class="container">
-              <div class="row text-center">
-                <div class="col-12 text-center">
-                  <div id="gallery"></div>
-                </div>
-              </div>
-              <div class="row justify-content-center" id="QuranAudio">
-                  <div class="col-lg-6 col-10">
-                    <audio controls class="plyr" hidden>
-                      <source type="audio/mp3">
-                    </audio>
-                  </div>
-                </div>
-            </div>
-    </div>
-    
     <!-- footer section -->
     <footer class="footer_section">
       <div class="container">
@@ -168,13 +164,12 @@
       </div>
     </footer>
     <!-- footer section -->
-
     <!-- jQery -->
     <script src="js/jquery-3.4.1.min.js"></script>
     <!-- popper js -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
       integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-      </script>
+    </script>
     <!-- bootstrap js -->
     <script src="js/bootstrap.js"></script>
     <!-- owl slider -->
@@ -185,7 +180,7 @@
     <!-- nice select -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
     <!-- custom js -->
-    <script type="module" src="js/quran.js"></script>
+    <script type="module" src="js/Azkar.js"></script>
     <!-- End Google Map -->
     <!-- DevExtreme libraries (reference only one of them) -->
     <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/23.2.4/js/dx.all.js"></script>

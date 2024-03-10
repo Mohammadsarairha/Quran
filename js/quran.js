@@ -1,35 +1,110 @@
 import { surah } from './Surah.js';
-// to get current year
-function getYear() {
-    var currentDate = new Date();
-    var currentYear = currentDate.getFullYear();
-    document.querySelector("#displayYear").innerHTML = currentYear;
-}
+import { pages } from './pages.js';
+import { reciters } from './reciters.js';
 
-getYear();
+let player;
+let galleryWidget;
+let popup;
+let URL ;
+let ID;
+const dataSource = [];
 
-const player = new Plyr('audio', {
-    controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'settings', 'fullscreen'],
-    volume: 0,
-    seekTime: 10,
-    keyboard: { focused: true, global: true }
-});
-  
-// nice select
+//Ready page
 $(document).ready(function ()
 {
-    createDiv(2,607);
+    // const urlParams = new URLSearchParams(window.location.search);
+    // // Get the value of the 'ID' parameter
+    // URL = urlParams.get('ID');
+
+    URL = sessionStorage.getItem('Url');
+    ID = parseInt(sessionStorage.getItem('Id'));
+    
+    galleryWidget = $('#gallery').dxGallery({
+        dataSource: dataSource,
+        height: 'auto', // Adjust as needed
+        width: 'auto', // Adjust as needed
+        loop: false,
+        showNavButtons: $(window).width() > 576 ? true : false , 
+        showIndicator: false,
+        rtlEnabled: true, // Enable RTL layout
+        swipeEnabled:true,
+    }).dxGallery('instance');
+    
+    player = new Plyr('audio', {
+        controls: ['play', 'progress', 'mute', 'volume', 'fullscreen'],
+        volume: 0,
+        seekTime: 10,
+        keyboard: { focused: true, global: true }
+    });
+
+    popup = $('#popup').dxPopup({
+        width: () => $(window).width() > 576 ? '50%' : '100%', // 576px is the bootstrap mobile breakpoint
+        height: 'auto',
+        visible: false,
+        hideOnOutsideClick: true,
+        showCloseButton: true,
+        dragEnabled:false,
+        onHidden() 
+        {
+            player.stop();         
+        },
+    }).dxPopup('instance');
+
+    $("#RecitersList").dxSelectBox({
+        dataSource: new DevExpress.data.DataSource({
+            store: new DevExpress.data.ArrayStore({
+                data: reciters,
+                key: "id",
+                paginate: true,
+                pageSize: 1
+            })
+        }),
+        searchMode: "contains",
+        valueExpr: "id",
+        displayExpr: "name",
+        rtlEnabled: true,
+        searchEnabled: true,
+        deferRendering: false,
+        showDropDownButton: true,
+        readOnly: false,
+        placeholder: "----- إختر -----",
+        onValueChanged: function(e) 
+        {
+            var selectedId = e.value;
+            var selectedReciter = reciters.find(function(reciter) {
+                return reciter.id === selectedId;
+            });
+            URL = selectedReciter.moshaf.server;
+        },
+        itemTemplate: function(data) {
+            return $("<div>")
+            .append($("<img>").attr("src", data.Pic).addClass("rounded-circle").css({
+                "max-width": "50px", // Adjust as needed
+                "max-height": "50px", // Adjust as needed
+                "padding":"5px",
+                "margin-left":"10px",
+            }))
+            .append($("<span>").text(data.name));
+        }
+    });
+
+    $("#RecitersList").dxSelectBox('instance').option('value', ID);
+
     SurahD();
-  $('select').niceSelect();
 });
 
+$(window).resize(function() {
+    popup.option('width', $(window).width() > 576 ? '50%' : '100%');
+});
+
+//display all surah name
 function SurahD()
 {
+    
     // Accessing the div element with id "SurahDiv"
     const SurahDiv = document.getElementById("SurahDiv");
-    const audioElement = document.querySelector(".plyr");
-// Looping over each surah in the surah array
-surah.forEach(surah => {
+    // Looping over each surah in the surah array
+    surah.forEach(surah => {
     // Creating div element for column
     const colDiv = document.createElement("div");
     colDiv.className = "col-xl-2 col-lg-2 col-md-3 col-sm-4 col-4 CardH";
@@ -68,64 +143,41 @@ surah.forEach(surah => {
         } else {
             var id = surah.id;
         }
+
+        const pagesToShow = pages.slice(surah.start_page,surah.end_page + 1);
+        galleryWidget.option('dataSource', pagesToShow);
+        galleryWidget.option("selectedIndex", 0);
         player.source = {
             type: 'audio',
             sources: [{
-                src: `https://server8.mp3quran.net/lhdan/${id}.mp3`,
+                src: `${URL}/${id}.mp3`,
                 type: 'audio/mp3',
             }],
         };
         // Play the audio
         player.play();
-        
-        setTimeout(() => {
-            const azanSection = document.getElementById("owlDiv");
-            if (azanSection) {
-                azanSection.style.scrollMarginTop = "100px";
-                azanSection.scrollIntoView({ behavior: 'smooth'});
-            }
-        }, 1500);
-        var owl = $(".client_owl-carousel");
-        owl.owlCarousel();
-        owl.trigger('to.owl.carousel', surah.start_page - 1);
-        
+        $("#QuranAudio").show();
+        popup.show();
     });
+});    
+}
+
+$("#QuranDuaa").click(function(){
+
+    const pagesToShow = pages.slice(607,608);
+    console.log(pagesToShow);
+    galleryWidget.option('dataSource', pagesToShow);
+    
+    popup.show();
+    $("#QuranAudio").hide();
 });
-}
-function createDiv(start , end)
-{
-  var carouselItems = '';
-  for (var i = start; i <= 607; i++) {
-      carouselItems += '<div class="item"><div class="box"><div class="detail-box"><img src="https://cdn.qurango.net/Sura2/files/mobile/' + i + '.jpg" alt="" class="box-img"></div></div></div>';
-  }
 
-  // Append the carousel items to the carousel container
-  $('#owlDiv').html(carouselItems);
+//display quran pages
+$("#quranTab").click(function(){
 
-  // Initialize Owl Carousel
-  $(".client_owl-carousel").owlCarousel({
-      loop: false,
-      rtl: true,
-      margin: 0,
-      dots: false,
-      nav: true,
-      mouseDrag: true,
-      touchDrag: true,
-      items: 2,
-      slideBy: 2,
-      responsive: {
-          0: {
-              items: 1
-          },
-          768: {
-              items: 2
-          },
-          1000: {
-              items: 2
-          }
-      }
+    sessionStorage.setItem('Url', "https:\/\/server6.mp3quran.net\/akdr\/");
+    sessionStorage.setItem('Id', 1);
   });
-}
 
 
 

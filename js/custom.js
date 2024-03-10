@@ -9,33 +9,22 @@ function getYear() {
 getYear();
 
 // Get the audio element
-var audio = document.getElementById("myAudio");
 
-// Store the current playback time before navigating
-var currentTime = audio.currentTime;
+document.addEventListener("DOMContentLoaded", function () {
+  const navbarToggler = document.querySelector(".navbar-toggler");
+  const navbarCollapse = document.querySelector(".navbar-collapse");
 
-// Function to store the current playback time before navigating
-function storePlaybackTime() {
-    currentTime = audio.currentTime;
-}
-
-// Event listener to store the playback time before leaving the page
-window.addEventListener("beforeunload", storePlaybackTime);
-
-// When navigating to a new page
-document.querySelector('a').addEventListener('click', function(event) {
-    // Prevent the default behavior of the link
-    event.preventDefault();
-
-    // Navigate to the new page
-    window.location.href = this.href;
-
-    // Restore the playback time after a short delay to allow the new page to load
-    setTimeout(function() {
-        audio.currentTime = currentTime;
-    }, 500); // Adjust the delay as needed
+  const navLinks = document.querySelectorAll(".nav-link");
+  navLinks.forEach(function (link) {
+    link.addEventListener("click", function () {
+      if (window.innerWidth < 992) { // Check if viewport width is less than 992px (Bootstrap's default mobile breakpoint)
+        navbarCollapse.classList.remove("show");
+        navbarToggler.classList.add("collapsed"); // Add the class when navbar is collapsed
+        navbarToggler.setAttribute("aria-expanded", "false"); // Set aria-expanded to false
+      }
+    });
+  });
 });
-
 // nice select
 $(document).ready(function ()
 {
@@ -72,16 +61,24 @@ $(document).ready(function ()
         caption: "المصحف",
     },
     {
+      dataField:"moshaf.server",
+      visible:false,
+    },
+    {
       type: "buttons",
-      width: 80,
+      width: $(window).width() > 576 ? 100 : 50 , 
+      caption: "تشغيل",
       showInColumnChooser: false,
       buttons: [{
           icon: "video",
           visible: true,
           hint: 'تشغيل',
           onClick: function (e) {
-              var ID = e.row.data.Id;
-              window.location.href = 'Home/Edit/' + ID;
+              var Url = e.row.data.moshaf.server;
+              var Id = e.row.data.id;
+              sessionStorage.setItem('Url', Url);
+              sessionStorage.setItem('Id', Id);
+              window.location.href = 'quran.html';
           }
       }
       ]
@@ -90,7 +87,14 @@ $(document).ready(function ()
 
 
   var dataGrid = $("#gridContainer").dxDataGrid({
-    dataSource: reciters,
+    dataSource: new DevExpress.data.DataSource({
+      store: new DevExpress.data.ArrayStore({
+          data: reciters,
+          key: "id",
+          paginate: true,
+          pageSize: 1
+      })
+    }),
     columns: columns,
     columnAutoWidth: true,
     showBorders: true,
@@ -110,8 +114,9 @@ $(document).ready(function ()
     },
     searchPanel: {
       visible: true,
+      width: 300, // Adjust the width as needed
       highlightCaseSensitive: true,
-      placeholder: 'البحث ...',
+      placeholder: '\u200Fالبحث ...', 
     },
 }).dxDataGrid("instance");
 
@@ -166,7 +171,7 @@ function getPrayerTime()
     // Format the date
     const formattedDate = formatDate(currentDate);
 // Get current location using the browser's Geolocation API
-fetch('https://ipinfo.io/json')
+fetch('https://ipinfo.io/json?token=c0ab4090bda1c1')
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -178,7 +183,7 @@ fetch('https://ipinfo.io/json')
     
     const apiUrl = `https://api.aladhan.com/v1/timings/${formattedDate}?latitude=${latitude}&longitude=${longitude}&method=1`;
     const apiUrlLocation = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ar`;
-    
+
     // Fetch prayer times data using latitude and longitude
     fetch(apiUrl)
       .then(response => {
@@ -195,6 +200,8 @@ fetch('https://ipinfo.io/json')
         $("#AsrTime").text(convertTimeFormat(data.data.timings.Asr));
         $("#MaghribTime").text(convertTimeFormat(data.data.timings.Maghrib));
         $("#IshaTime").text(convertTimeFormat(data.data.timings.Isha));
+        $("#cityDiv").text(`${data.data.date.hijri.weekday.ar} - ${data.data.date.gregorian.date}` )
+        $("#cityDiv1").text(`${data.data.date.hijri.month.number} - ${data.data.date.hijri.month.ar} - ${data.data.date.hijri.year}` )
       })
       .catch(error => {
         console.error('Error fetching prayer times data:', error);
@@ -210,7 +217,7 @@ fetch('https://ipinfo.io/json')
       })
       .then(data => {
         // Update cityDiv element with city name
-        $("#cityDiv").text(`${data.address.country} / ${data.address.state}`);
+        // $("#cityDiv").text(`${data.address.country} / ${data.address.state}` );
       })
       .catch(error => {
         console.error('Error fetching location information:', error);
@@ -219,47 +226,7 @@ fetch('https://ipinfo.io/json')
   .catch(error => {
     console.error('Error fetching IP information:', error);
   });
-
 }
-
-// function getRecitations()
-// {
-//     const recitationsDiv = document.getElementById('recitationsDiv');
-
-//     const apiUrl = "https://www.mp3quran.net/api/v3/reciters?language=ar";
-
-// // Make a GET request to the API
-// fetch(apiUrl)
-//   .then(response => {
-//     // Check if the request was successful (status code 200)
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-//     // Parse the JSON response
-//     return response.json();
-//   })
-//   .then(data => {
-//     // Check if the 'recitations' array is present in the response
-//     if (data && data.reciters && Array.isArray(data.reciters)) {
-//       // Loop over each recitation
-//       data.reciters.forEach(reciters => {
-          
-//         $(() => {
-          
-//         });
-//         // ... (access other properties as needed)
-//       });
-//     } else {
-//       console.error('Invalid or missing recitations array in the response');
-//     }
-//   })
-//   .catch(error => {
-//     // Handle any errors that occurred during the fetch
-//     console.error('Error fetching data:', error);
-//   });
-
-// }
-
 
 function convertTimeFormat(inputTime) {
     // Parse the input time string
@@ -276,4 +243,10 @@ function convertTimeFormat(inputTime) {
 
     return formattedTime;
 }
+
+$("#quranTab").click(function(){
+
+  sessionStorage.setItem('Url', "https:\/\/server6.mp3quran.net\/akdr\/");
+  sessionStorage.setItem('Id', 1);
+});
 

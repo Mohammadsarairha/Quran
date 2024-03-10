@@ -18,6 +18,13 @@ body {
   text-align: center; /* for right-to-left text */
 }
 
+.quranic-text1 {
+  font-family: 'PDMS_Saleem_QuranFont', sans-serif;
+  font-size: 15px; /* adjust the size as needed */
+  line-height: 1.5; /* adjust line height as needed */
+  text-align: right; /* for right-to-left text */
+}
+
 .plyr {
   border-radius: 30px; /* You can adjust the radius to your preference */
   overflow: hidden; /* Ensures border-radius works properly */
@@ -70,9 +77,6 @@ body {
   padding-top: 90px;
 }
 
-.layout_padding-bottom {
-  padding-bottom: 90px;
-}
 
 h1,
 h2 {
@@ -378,7 +382,10 @@ a:focus {
           align-items: center;
   position: relative;
   padding: 45px 0 75px 0;
+  margin-bottom: 100px;
 }
+
+
 
 .slider_section .row {
   -webkit-box-align: center;
@@ -417,6 +424,7 @@ a:focus {
 
 .CardH .card {
   border-color: #464B50;
+  cursor: pointer;
 }
 
 .CardH:hover .card {
@@ -934,22 +942,50 @@ a:focus {
   right: 0; /* Adjust this value to position it horizontally */
 }
 
-.QuranPage{
-  max-width: 70%;
-  max-height: 50%; 
-  margin: auto;
+
+.dx-toolbar-before {
+  right: 0;
+  left: auto;
+  padding: 0;
 }
 
+.dx-toolbar-after {
+  right: 0;
+  left: auto;
+  padding: 0;
+}
+
+.dx-list-item{
+  text-align: right;
+  
+}
+
+#popup {
+  width: 90%; /* Initially set the popup width to 100% */
+}
+
+#gallery{
+  margin-bottom: 10px;
+}
+#gallery img {
+  max-width: 60%; /* Ensure images don't exceed the width of their container */
+}
+
+@media screen and (max-width: 767px) {
+  #gallery img  {
+    max-width: 100%; /* Ensure images don't exceed the width of their container */
+    height: auto; /* Maintain aspect ratio */
+  }
+}
+
+
+
 @media (max-width: 430px) {
-  .client_section .owl-carousel .owl-nav .owl-prev {
-    display: none;
+  .slider_section{
+    margin-bottom: 250px;
+    margin-top: 100px;
   }
-  .client_section .owl-carousel .owl-nav .owl-next {
-    display: none;
-  }
-  .QuranPage{
-    max-width: 100%;
-  }
+  
 }
 /* Styling for the next button */
 .client_section .owl-carousel .owl-nav .owl-next {

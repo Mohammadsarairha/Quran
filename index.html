@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <!-- Basic -->
     <meta charset="UTF-8">
@@ -36,11 +35,22 @@
     <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/23.2.4/css/dx.dark.css" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
   </head>
-
+  <style>
+    .dx-rtl .dx-toolbar-after {
+      right: 0;
+      left: auto;
+      padding: 0;
+      margin: 0;
+    }
+    .dx-toolbar-before {
+      right: 0;
+      left: auto;
+      padding: 0;
+      margin: 0;
+    }
+  </style>
   <body>
-
     <div class="hero_area">
-
       <!-- header section strats -->
       <header class="header_section">
         <div class="container">
@@ -56,7 +66,7 @@
             <div class="collapse navbar-collapse" dir="rtl" id="navbarSupportedContent">
               <ul class="navbar-nav  mx-auto ">
                 <li class="nav-item active">
-                  <a class="nav-link" href="#QuranHome">القران الكريم<span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="quran.html" id="quranTab" style="color: #56C0D0;">القران الكريم<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#AzanSec">اوقات الصلاه</a>
@@ -65,13 +75,13 @@
                   <a class="nav-link" href="#SecondeSec">قائمة القراء</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#QuranSection">المصحف</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="quran.html">الإذكار</a>
+                  <a class="nav-link" href="Azkar.html">الإذكار</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="about.html">الإحاديث</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#QuranSection">تحميل المصحف </a>
                 </li>
               </ul>
             </div>
@@ -113,15 +123,7 @@
       </section>
       <!-- end slider section -->
     </div>
-    <section style="margin-bottom: 150px;" id="AzanSec">
-      <audio id="myAudio" controls autoplay>
-        <source src="https://backup.qurango.net/radio/salma" type="audio/mpeg">
-        Your browser does not support the audio element.
-      </audio>
-
-    </section>
-    <a href="quran.html" style="color: rebeccapurple;">Go to Page 2</a>
-    <section style="margin-top: 50px; border-color: red;">
+    <section style="margin-top: 50px; border-color: red;scroll-margin-top: 120px;" id="AzanSec">
       <div class="container text-center" dir="rtl" id="AzanContainer">
         <div class="row">
           <div class="col-12 text-center">
@@ -129,8 +131,11 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12 text-center">
-            <p id="cityDiv" style="font-family: 'DroidArabicKufiRegular'"></p>
+          <div class="col-6 text-center">
+            <p id="cityDiv" style="font-family: 'DroidArabicKufiRegular' ; font-size: large;"></p>
+          </div>
+          <div class="col-6 text-center">
+            <p id="cityDiv1" style="font-family: 'DroidArabicKufiRegular' ; font-size: large;"></p>
           </div>
         </div>
         <div class="row">
@@ -215,11 +220,8 @@
 
     <!-- food section -->
 
-    <section style="margin-bottom: 250px;" id="QuranSection">
-    </section>
-    <section class="food_section layout_padding-bottom">
+    <section class="food_section layout_padding-bottom" style="margin-bottom: 150px;scroll-margin-top: 150px;" id="QuranSection">
       <div class="container">
-
         <div class="filters-content text-right" dir="rtl">
           <div class="row grid">
             <div class="col-sm-6 col-lg-4 all ">
@@ -240,7 +242,7 @@
                     <div class="options">
                       <a href="https://archive.org/download/Quran-Kareem-Khawagah-The-Blue-Page-Quran/Quran-Kareem-Khawagah-The-Blue-Page-Quran.pdf"
                         download="Quran-Kareem-Blue-Page.pdf" target="_blank">
-                        تصفح
+                        تحميل
                       </a>
                     </div>
                   </div>
@@ -265,7 +267,7 @@
                     <div class="options">
                       <a href="https://archive.org/download/EQuran00001/E-Quran-00001.pdf" download="E-Quran-00001.pdf"
                         target="_blank">
-                        تصفح
+                        تحميل
                       </a>
                     </div>
                   </div>
@@ -291,7 +293,7 @@
                     <div class="options">
                       <a href="https://archive.org/download/arabic-568335686835685363568q3an1/arabic-quran2.pdf"
                         download="arabic-quran2.pdf" target="_blank">
-                        تصفح
+                        تحميل
                       </a>
                     </div>
                   </div>
@@ -317,7 +319,7 @@
                     <div class="options">
                       <a href="https://archive.org/download/bensaoud_gmail_20170308_0721/%D9%85%D8%B5%D8%AD%D9%81%20%D8%A7%D9%84%D8%AA%D8%AC%D9%88%D9%8A%D8%AF%20%D8%A7%D9%84%D9%85%D9%84%D9%88%D9%86.pdf"
                         download="Quran.pdf" target="_blank">
-                        تصفح
+                        تحميل
                       </a>
                     </div>
                   </div>
@@ -343,7 +345,7 @@
                     <div class="options">
                       <a href="https://archive.org/download/EQuran00003/E-Quran-00003.pdf" download="E-Quran-00003.pdf"
                         target="_blank">
-                        تصفح
+                        تحميل
                       </a>
                     </div>
                   </div>
@@ -360,7 +362,7 @@
                   <div class="detail-box">
                     <p>الطبعة الأولى 1420 للهجرة</p>
                     <h5>
-                      القرآن الكريم ملون وبهامشه تفسير الجلالين
+                      القرآن الكريم ملون وبهامشه 
                     </h5>
                     <p>
                       القرآن الكريم مصحف التجويد الملون و بهامشه تفسير الجلالين اصدار دار المعرفة في دمشق و رتل القرآن
@@ -368,7 +370,7 @@
                     </p>
                     <div class="options">
                       <a href="https://archive.org/download/Quran25/Quran25.pdf" download="Quran25.pdf" target="_blank">
-                        تصفح
+                        تحميل
                       </a>
                     </div>
                   </div>
