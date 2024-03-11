@@ -20,7 +20,7 @@ $(document).ready(function(){
             },
             onItemClick: function(e) 
             {
-                alert(e.itemData.json);
+              fetchAzkar() ;
                 drawer.toggle();
             }
           });
@@ -43,49 +43,64 @@ $(document).ready(function(){
       });
 
       $('.dx-button-text').text('المزيد');
-
-      let seconds = 0;
-  let inProgress = true;
-  let intervalId;
-
-  const progressBarStatus = $('#progressBarStatus').dxProgressBar({
-    min: 0,
-    max: 3,
-    width: '100%',
-    showStatus: false, // Set showStatus to false to hide the number
-    onComplete(e) {
-      inProgress = false;
-      progressButton.option('text', `${seconds}`);
-      e.element.addClass('complete');
-      $('#progress-button').dxButton('instance').option('type', 'danger');
-    },
-  }).dxProgressBar('instance');
-
-  const progressButton = $('#progress-button').dxButton({
-    text: '0',
-    stylingMode: 'contained',
-    type: 'default',
-    width: 200,
-    onClick() {
-      $('#progressBarStatus').removeClass('complete');
-      if (inProgress) {
-        seconds = seconds + 1;
-        $('#progress-button').dxButton('instance').option('text', `${seconds}`);
-        progressBarStatus.option('value', seconds);
-
-      } else {
-        inProgress = !inProgress;
-        seconds = 0;
-        progressBarStatus.option('value', 0);
-        progressButton.option('text', "0");
-        $('#progress-button').dxButton('instance').option('type', 'default');
-      }
-    },
-  }).dxButton('instance');
-
-  //progressBarStatus.option('max', 10);
 });
 
+
+async function fetchAzkar() {
+  const response = await fetch('https://www.hisnmuslim.com/api/ar/27.json');
+  const data = await response.json();
+  const azkarContainer = document.getElementById('AzkarDiv');
+
+  // Iterate over each key in the data object
+  for (const key in data) {
+    if (Object.hasOwnProperty.call(data, key)) {
+      const zikr = data[key];
+
+      // Create elements for card
+      const cardDiv = document.createElement('div');
+      cardDiv.classList.add('container', 'mt-5');
+      cardDiv.innerHTML = `
+        <div class="card">
+          <div class="card-body">
+            <p class="card-text">${zikr.ARABIC_TEXT}</p>
+            <div class="row justify-content-center">
+              <div class="col-3">
+                <button id="Sabah${zikr.ID}" onclick="incrementProgress('Sabah${zikr.ID}', ${zikr.REPEAT})" class="btn btn-primary btn-block" style="height: 50px;">${zikr.REPEAT}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Append card to container
+      azkarContainer.appendChild(cardDiv);
+    }
+  }
+}
+
+
+
+function incrementProgress(name , count)
+{
+    var hasOldClass = $(`#${name}`).hasClass("btn btn-danger btn-block");
+
+    if(hasOldClass)
+    {
+        $(`#${name}`).text(count);
+        $(`#${name}`).removeClass("btn btn-danger btn-block").addClass("btn btn-primary btn-block");
+    }else{
+    
+      var integerValue = parseInt($(`#${name}`).text()) - 1;
+    if(integerValue > 0)
+    {
+            $(`#${name}`).text(`${integerValue}`);
+    }else{
+      $(`#${name}`).html('<i class="bi bi-arrow-clockwise btn-block"></i>');
+      var currentClass = $(`#${name}`).attr("class");
+      $(`#${name}`).removeClass(currentClass).addClass("btn btn-danger btn-block");
+    }
+    }
+}
 
 $("#quranTab").click(function()
 {
