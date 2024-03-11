@@ -220,21 +220,30 @@
     <!-- DevExtreme libraries (reference only one of them) -->
     <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/23.2.4/js/dx.all.js"></script>
     <script src="https://cdn.plyr.io/3.6.8/plyr.polyfilled.js"></script>
+    <script>
+      function incrementProgress(name , count)
+      {
+        var hasOldClass = $(`#${name}`).hasClass("btn btn-danger btn-block");
+        if(hasOldClass)
+        {
+            $(`#${name}`).text(count);
+            $(`#${name}`).removeClass("btn btn-danger btn-block").addClass("btn btn-primary btn-block");
+        }
+        else
+        {
+          var integerValue = parseInt($(`#${name}`).text()) - 1;
+          if(integerValue > 0)
+          {
+            $(`#${name}`).text(`${integerValue}`);
+          }
+          else
+          {
+            $(`#${name}`).html('<i class="bi bi-arrow-clockwise btn-block"></i>');
+            var currentClass = $(`#${name}`).attr("class");
+            $(`#${name}`).removeClass(currentClass).addClass("btn btn-danger btn-block");
+          }
+        }
+      }
+    </script>
   </body>
-
 </html>
-
-
-<!-- <div class="container mt-5">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Progress Example</h5>
-      <p class="card-text">This is a simple example of a Bootstrap card with a progress bar and buttons to change or reset the progress value.</p>
-      <div class="row justify-content-center">
-        <div class="col-3">
-          <button id="incrementBtn" onclick="incrementProgress('incrementBtn', 10)" class="btn btn-primary btn-block" style="height: 50px; " >10</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->

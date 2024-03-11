@@ -1,6 +1,7 @@
 import { hisnmuslim } from './Hisnmuslim.js';
 
-$(document).ready(function(){
+$(document).ready(function()
+{
     const drawer = $('#drawer').dxDrawer({
         opened: true,
         position: 'right', 
@@ -20,7 +21,9 @@ $(document).ready(function(){
             },
             onItemClick: function(e) 
             {
-              fetchAzkar() ;
+                $("#AzkarDiv").show();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                fetchAzkar(e.itemData.id);
                 drawer.toggle();
             }
           });
@@ -36,6 +39,14 @@ $(document).ready(function(){
             icon: 'showpanel',
             stylingMode: 'text',
             onClick() {
+              if($(window).width() < 576)
+              {
+                if ($("#AzkarDiv").is(':visible')) {
+                  $("#AzkarDiv").hide();
+                } else {
+                  $("#AzkarDiv").show();
+                }
+              }
               drawer.toggle();
             },
           },
@@ -43,64 +54,52 @@ $(document).ready(function(){
       });
 
       $('.dx-button-text').text('المزيد');
+      fetchAzkar(27);
+      drawer.toggle();
 });
 
 
-async function fetchAzkar() {
-  const response = await fetch('https://www.hisnmuslim.com/api/ar/27.json');
-  const data = await response.json();
-  const azkarContainer = document.getElementById('AzkarDiv');
-
-  // Iterate over each key in the data object
-  for (const key in data) {
-    if (Object.hasOwnProperty.call(data, key)) {
-      const zikr = data[key];
-
+async function fetchAzkar(id) {
+  try {
+    // Dynamically import the module based on the id
+    const response  = await import(`./Azkar-Json/${id}.js`);
+    const azkarContainer = document.getElementById('AzkarDiv');
+    if (azkarContainer) {
+      // Remove all child nodes from azkarContainer
+      while (azkarContainer.firstChild) {
+          azkarContainer.removeChild(azkarContainer.firstChild);
+      }
+    }
+    // Iterate over each element in the imported module
+    response.Azkar.forEach(element => {
       // Create elements for card
       const cardDiv = document.createElement('div');
       cardDiv.classList.add('container', 'mt-5');
       cardDiv.innerHTML = `
-        <div class="card">
-          <div class="card-body">
-            <p class="card-text">${zikr.ARABIC_TEXT}</p>
-            <div class="row justify-content-center">
-              <div class="col-3">
-                <button id="Sabah${zikr.ID}" onclick="incrementProgress('Sabah${zikr.ID}', ${zikr.REPEAT})" class="btn btn-primary btn-block" style="height: 50px;">${zikr.REPEAT}</button>
+        <div class="card" style="background-color: #222831;">
+          <div class="card-body" style="direction: rtl; text-align: center; color: #fff;">
+            <div class="row justify-content-center" style="margin-bottom:50px">
+            <p style="width:80% ; line-height: 2.5; font-size: 18px;" class="card-text">${element.ARABIC_TEXT}</p>
+            </div>
+            <div class="row justify-content-center" style="margin-bottom:20px">
+              <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-4">
+                <button id="Sabah${element.ID}" onclick="incrementProgress('Sabah${element.ID}', ${element.REPEAT})" class="btn btn-primary btn-block" style="height: 50px;">${element.REPEAT}</button>
               </div>
             </div>
           </div>
-        </div>
-      `;
-
+        </div>`;
       // Append card to container
       azkarContainer.appendChild(cardDiv);
-    }
+    });
+
+  } catch (error) {
+    console.error(`Error loading Azkar${id} module:`, error);
   }
 }
 
 
 
-function incrementProgress(name , count)
-{
-    var hasOldClass = $(`#${name}`).hasClass("btn btn-danger btn-block");
 
-    if(hasOldClass)
-    {
-        $(`#${name}`).text(count);
-        $(`#${name}`).removeClass("btn btn-danger btn-block").addClass("btn btn-primary btn-block");
-    }else{
-    
-      var integerValue = parseInt($(`#${name}`).text()) - 1;
-    if(integerValue > 0)
-    {
-            $(`#${name}`).text(`${integerValue}`);
-    }else{
-      $(`#${name}`).html('<i class="bi bi-arrow-clockwise btn-block"></i>');
-      var currentClass = $(`#${name}`).attr("class");
-      $(`#${name}`).removeClass(currentClass).addClass("btn btn-danger btn-block");
-    }
-    }
-}
 
 $("#quranTab").click(function()
 {

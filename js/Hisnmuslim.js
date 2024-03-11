@@ -514,7 +514,7 @@ const hisnmuslim =
 			id: 86,
 			text: "الدعاء لمن قال غفر الله لك",
 			"AUDIO_URL": "http://www.hisnmuslim.com/audio/ar/ar_7esn_AlMoslem_by_Doors_087.mp3",
-			json: "http://www.hisnmuslim.com/api/ar/87.json"
+			json: "http://www.hisnmuslim.com/api/ar/86.json"
 		},
 		{
 			id: 87,
