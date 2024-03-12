@@ -59,7 +59,7 @@ $(document).ready(function ()
     
     player = new Plyr('audio', {
         controls: ['play', 'progress', 'mute', 'volume', 'fullscreen'],
-        volume: 0,
+        volume: 50,
         seekTime: 10,
         keyboard: { focused: true, global: true }
     });
