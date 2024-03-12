@@ -9,6 +9,24 @@ let URL ;
 let ID;
 const dataSource = [];
 
+document.addEventListener("DOMContentLoaded", function () 
+{
+
+  if (window.location.hash) {
+    var targetSection = document.querySelector(window.location.hash);
+    if (targetSection) {
+      if ('scrollBehavior' in document.documentElement.style) {
+        // Use smooth scrolling if supported
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Fallback for browsers that do not support smooth scrolling
+        targetSection.scrollIntoView();
+      }
+    }
+  }
+  
+});
+
 //Ready page
 $(document).ready(function ()
 {

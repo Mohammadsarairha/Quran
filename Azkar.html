@@ -57,7 +57,7 @@
         box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.08);
         padding: 5px 10px;
         background-color: #1F2125;
-        z-index: 10000;
+        z-index: 999;
         position: fixed;
       }
       
@@ -110,6 +110,7 @@
         margin: 10px;
         box-shadow: 3px 3px 5px #4D4D4D;
         margin-top: 120px;
+        min-height: 70vh;
       }
 
       .form {
@@ -159,9 +160,6 @@
                   <a class="nav-link" href="Azkar.html">الإذكار</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="about.html">الإحاديث</a>
-                </li>
-                <li class="nav-item">
                   <a class="nav-link" href="index.html#QuranSection">تحميل المصحف </a>
                 </li>
               </ul>
@@ -171,10 +169,12 @@
       </header>
       <!-- end header section -->
     </div>
+    
     <section style="margin-bottom: 10px;">
       <div class="demo-container">
         <div class="flex-container">
-          <div id="toolbar"></div>
+          <div id="toolbar">
+          </div>
           <div id="drawer">
             <div class="crate-div" id="AzkarDiv">
               
@@ -187,18 +187,42 @@
     <footer class="footer_section">
       <div class="container">
         <div class="row">
+          <div class="col-md-4 footer-col">
+            <div class="footer_contact">
+            </div>
+          </div>
+          <div class="col-md-4 footer-col" dir="rtl">
+            <p>
+              هذه العمل صدقه جارية وهو خالص لوجه الله تعالى واسال الله ان يتقبل منا <br><br>
+              قال تعالى (الذين آمنوا وتطمئن قلوبهم بذكر الله ۗ ألا بذكر الله تطمئن القلوب )
+            </p>
+          </div>
         </div>
         <div class="footer-info">
-          <p>
-            &copy; <span id="displayYear"></span> All Rights Reserved By
-            <a href="https://html.design/">Free Html Templates</a><br><br>
-            &copy; <span id="displayYear"></span> Distributed By
-            <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
-          </p>
+          <div class="footer_detail">
+            <div class="footer_social">
+              <a href="">
+                <i class="fa fa-chrome" aria-hidden="true"></i>
+              </a>
+              <a href="">
+                <i class="fa fa-firefox" aria-hidden="true"></i>
+              </a>
+              <a href="">
+                <i class="fa fa-edge" aria-hidden="true"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/mohammad-saraireh-922708114" target="_blank">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+              </a>
+              <a href="https://github.com/Mohammadsarairha/" target="_blank">
+                <i class="fa fa-github" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
     <!-- footer section -->
+    
     <!-- jQery -->
     <script src="js/jquery-3.4.1.min.js"></script>
     <!-- popper js -->

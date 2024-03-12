@@ -1,16 +1,23 @@
 import { reciters } from '../js/reciters.js';
-// to get current year
-function getYear() {
-    var currentDate = new Date();
-    var currentYear = currentDate.getFullYear();
-    document.querySelector("#displayYear").innerHTML = currentYear;
-}
-
-getYear();
 
 // Get the audio element
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () 
+{
+
+  if (window.location.hash) {
+    var targetSection = document.querySelector(window.location.hash);
+    if (targetSection) {
+      if ('scrollBehavior' in document.documentElement.style) {
+        // Use smooth scrolling if supported
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Fallback for browsers that do not support smooth scrolling
+        targetSection.scrollIntoView();
+      }
+    }
+  }
+  
   const navbarToggler = document.querySelector(".navbar-toggler");
   const navbarCollapse = document.querySelector(".navbar-collapse");
 
@@ -28,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // nice select
 $(document).ready(function ()
 {
+
   $('select').niceSelect();
   
   var columns = [
@@ -151,6 +159,7 @@ $(window).resize(function() {
   getPrayerTime();
 });
 
+  
   function formatDate(date) {
     // Get day, month, and year
     const day = String(date.getDate()).padStart(2, '0');
