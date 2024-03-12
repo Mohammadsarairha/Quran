@@ -1,6 +1,7 @@
 import { surah } from './Surah.js';
 import { pages } from './pages.js';
 import { reciters } from './reciters.js';
+import { surahList } from './SurahList.js';
 
 let player;
 let galleryWidget;
@@ -59,7 +60,7 @@ $(document).ready(function ()
     
     player = new Plyr('audio', {
         controls: ['play', 'progress', 'mute', 'volume', 'fullscreen'],
-        volume: 50,
+        volume: 100,
         seekTime: 10,
         keyboard: { focused: true, global: true }
     });
@@ -72,8 +73,7 @@ $(document).ready(function ()
         showCloseButton: true,
         dragEnabled:false,
         onHidden() 
-        {
-            player.stop();         
+        {       
         },
     }).dxPopup('instance');
 
@@ -117,6 +117,35 @@ $(document).ready(function ()
 
     $("#RecitersList").dxSelectBox('instance').option('value', ID);
 
+    $("#SuraList").dxSelectBox({
+        dataSource: new DevExpress.data.DataSource({
+            store: new DevExpress.data.ArrayStore({
+                data: surahList,
+                key: "id",
+                paginate: true,
+                pageSize: 1
+            })
+        }),
+        searchMode: "contains",
+        valueExpr: "id",
+        displayExpr: "name",
+        rtlEnabled: true,
+        searchEnabled: true,
+        deferRendering: false,
+        showDropDownButton: true,
+        readOnly: false,
+        value:0,
+        placeholder: "----- إختر -----",
+        onValueChanged: function(e) 
+        {
+            if (e.value === 0) {
+                SurahD();
+            }else{
+                Surah(e.value);
+            }
+        },
+    });
+
     SurahD();
 });
 
@@ -126,10 +155,16 @@ $(window).resize(function() {
 
 //display all surah name
 function SurahD()
-{
-    
+{   
     // Accessing the div element with id "SurahDiv"
     const SurahDiv = document.getElementById("SurahDiv");
+    if (SurahDiv) 
+    {
+        // Remove all child nodes from azkarContainer
+        while (SurahDiv.firstChild) {
+            SurahDiv.removeChild(SurahDiv.firstChild);
+        }
+    }
     // Looping over each surah in the surah array
     surah.forEach(surah => {
     // Creating div element for column
@@ -187,6 +222,75 @@ function SurahD()
         popup.show();
     });
 });    
+}
+
+function Surah(id)
+{   
+    // Accessing the div element with id "SurahDiv"
+    const SurahDiv = document.getElementById("SurahDiv");
+    // Looping over each surah in the surah array
+
+    if (SurahDiv) 
+    {
+        // Remove all child nodes from azkarContainer
+        while (SurahDiv.firstChild) {
+            SurahDiv.removeChild(SurahDiv.firstChild);
+        }
+    }
+    const desiredSurah = surah.find(s => s.id === id);
+    const colDiv = document.createElement("div");
+    colDiv.className = "col-xl-2 col-lg-2 col-md-3 col-sm-4 col-4 CardH";
+    colDiv.style.marginBottom = "20px"; // Adding margin-bottom
+    colDiv.setAttribute("id", desiredSurah.id);
+    // Creating div element for card
+    const cardDiv = document.createElement("div");
+    cardDiv.className = "card text-center";
+    
+    // Creating div element for card body
+    const cardBodyDiv = document.createElement("div");
+    cardBodyDiv.className = "card-body AzanCard";
+    
+    // Creating h5 element for surah name
+    const h5 = document.createElement("h5");
+    h5.className = "quranic-text";
+    h5.textContent = desiredSurah.name;
+    
+    // Appending h5 element to card body div
+    cardBodyDiv.appendChild(h5);
+    // Appending card body div to card div
+    cardDiv.appendChild(cardBodyDiv);
+    // Appending card div to column div
+    colDiv.appendChild(cardDiv);
+    // Appending column div to SurahDiv
+    SurahDiv.appendChild(colDiv);
+
+    colDiv.addEventListener("click", () =>
+    {
+        if (desiredSurah.id > 0 && desiredSurah.id < 10)
+        {
+            var id = `00${desiredSurah.id}`;
+        } else if (desiredSurah.id > 9 && desiredSurah.id < 100)
+        {
+            var id = `0${desiredSurah.id}`;
+        } else {
+            var id = desiredSurah.id;
+        }
+
+        const pagesToShow = pages.slice(desiredSurah.start_page,desiredSurah.end_page + 1);
+        galleryWidget.option('dataSource', pagesToShow);
+        galleryWidget.option("selectedIndex", 0);
+        player.source = {
+            type: 'audio',
+            sources: [{
+                src: `${URL}/${id}.mp3`,
+                type: 'audio/mp3',
+            }],
+        };
+        // Play the audio
+        player.play();
+        $("#QuranAudio").show();
+        popup.show();
+    });   
 }
 
 $("#QuranDuaa").click(function(){
